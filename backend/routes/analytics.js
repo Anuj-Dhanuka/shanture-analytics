@@ -257,6 +257,31 @@ router.get('/dashboard', [
   }
 });
 
+// Seed database with sample data
+router.post('/seed', async (req, res) => {
+  try {
+    // Import the seed function
+    const { exec } = require('child_process');
+    const { promisify } = require('util');
+    const execAsync = promisify(exec);
+    
+    // Run the seed script
+    const { stdout, stderr } = await execAsync('node scripts/seedDatabase.js');
+    
+    res.json({
+      success: true,
+      message: 'Database seeded successfully',
+      output: stdout
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error seeding database',
+      error: error.message
+    });
+  }
+});
+
 // Add new sale
 router.post('/sales', [
   body('customerId').isMongoId().withMessage('Valid customer ID is required'),

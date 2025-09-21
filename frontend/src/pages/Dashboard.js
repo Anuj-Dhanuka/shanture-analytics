@@ -7,6 +7,11 @@ import {
   Alert,
   CircularProgress,
   Container,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -33,6 +38,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState({ open: false, message: '', severity: 'success' });
+  const [seedDialogOpen, setSeedDialogOpen] = useState(false);
+  const [seeding, setSeeding] = useState(false);
 
   const fetchDashboardData = async () => {
     setLoading(true);
@@ -100,6 +107,45 @@ const Dashboard = () => {
     setEndDate(newEndDate);
   };
 
+  const handleSeedDatabase = async () => {
+    setSeeding(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://shanture-analytics-backend.onrender.com/api'}/analytics/seed`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        setNotification({
+          open: true,
+          message: 'Database seeded successfully! Refreshing dashboard...',
+          severity: 'success'
+        });
+        setSeedDialogOpen(false);
+        // Refresh dashboard data
+        fetchDashboardData();
+      } else {
+        setNotification({
+          open: true,
+          message: `Error seeding database: ${result.message}`,
+          severity: 'error'
+        });
+      }
+    } catch (err) {
+      setNotification({
+        open: true,
+        message: `Error seeding database: ${err.message}`,
+        severity: 'error'
+      });
+    } finally {
+      setSeeding(false);
+    }
+  };
+
   if (loading && !dashboardData) {
     return (
       <Container maxWidth="xl">
@@ -138,8 +184,38 @@ const Dashboard = () => {
         </Box>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
+          <Alert 
+            severity="error" 
+            sx={{ mb: 3 }}
+            action={
+              <Button 
+                color="inherit" 
+                size="small" 
+                onClick={() => setSeedDialogOpen(true)}
+              >
+                Seed Database
+              </Button>
+            }
+          >
             {error}
+          </Alert>
+        )}
+
+        {!error && !dashboardData && (
+          <Alert 
+            severity="info" 
+            sx={{ mb: 3 }}
+            action={
+              <Button 
+                color="inherit" 
+                size="small" 
+                onClick={() => setSeedDialogOpen(true)}
+              >
+                Seed Database
+              </Button>
+            }
+          >
+            No data available. Click "Seed Database" to populate with sample data.
           </Alert>
         )}
 
@@ -182,6 +258,38 @@ const Dashboard = () => {
             </Grid>
           </>
         )}
+
+        {/* Seed Database Dialog */}
+        <Dialog open={seedDialogOpen} onClose={() => setSeedDialogOpen(false)}>
+          <DialogTitle>Seed Database</DialogTitle>
+          <DialogContent>
+            <Typography>
+              This will populate your database with sample sales data including:
+            </Typography>
+            <ul>
+              <li>200 customers</li>
+              <li>100 products</li>
+              <li>5000 sales records (2+ years of data)</li>
+              <li>12 monthly analytics reports</li>
+            </ul>
+            <Typography color="warning.main" sx={{ mt: 2 }}>
+              <strong>Warning:</strong> This will clear all existing data and replace it with sample data.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setSeedDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleSeedDatabase} 
+              variant="contained" 
+              color="primary"
+              disabled={seeding}
+            >
+              {seeding ? 'Seeding...' : 'Seed Database'}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </LocalizationProvider>
   );
