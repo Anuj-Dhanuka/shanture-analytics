@@ -13,77 +13,66 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, config.SOCKET_OPTIONS);
 
-// Connect to MongoDB
 connectDB();
-
-// Middleware
 app.use(cors(config.CORS_OPTIONS));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/health', healthRoutes);
-
-// Socket.io connection handling
 io.on('connection', (socket) => {
-  console.log('Client connected:', socket.id);
+  console.log('New user connected:', socket.id);
 
   socket.on('join-dashboard', (data) => {
     socket.join('dashboard');
-    console.log(`Client ${socket.id} joined dashboard`);
+    console.log(`User ${socket.id} is now viewing the dashboard`);
   });
 
   socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
+    console.log('User disconnected:', socket.id);
   });
 });
 
-// Make io accessible to other modules
 app.set('io', io);
-
-// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Error:', err.stack);
+  console.error('Oops, something went wrong:', err.stack);
   res.status(500).json({
     success: false,
-    message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
+    message: 'Sorry, we encountered an issue',
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong on our end'
   });
 });
 
-// 404 handler
 app.use('*', (req, res) => {
   res.status(404).json({
     success: false,
-    message: 'Route not found'
+    message: 'Sorry, we could not find what you are looking for'
   });
 });
 
 const PORT = config.PORT;
 
-// Handle graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('SIGTERM received. Shutting down gracefully...');
+  console.log('Received shutdown signal. Closing server gracefully...');
   server.close(() => {
-    console.log('Process terminated');
+    console.log('Server has been shut down');
     process.exit(0);
   });
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT received. Shutting down gracefully...');
+  console.log('Received interrupt signal. Closing server gracefully...');
   server.close(() => {
-    console.log('Process terminated');
+    console.log('Server has been shut down');
     process.exit(0);
   });
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📊 Shanture Analytics Dashboard API`);
-  console.log(`🌍 Environment: ${config.NODE_ENV}`);
-  console.log(`🔗 Frontend URL: ${config.FRONTEND_URL}`);
+  console.log(`Server is up and running on port ${PORT}`);
+  console.log(`Analytics API is ready to serve data`);
+  console.log(`Running in ${config.NODE_ENV} mode`);
+  console.log(`Frontend can connect at ${config.FRONTEND_URL}`);
 });
 
 module.exports = { app, server, io };

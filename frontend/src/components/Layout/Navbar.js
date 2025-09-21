@@ -29,7 +29,6 @@ const Navbar = () => {
         setNewSaleCount(prev => prev + 1);
         setLastSaleTime(new Date());
         
-        // Reset count after 30 seconds
         setTimeout(() => {
           setNewSaleCount(0);
         }, 30000);

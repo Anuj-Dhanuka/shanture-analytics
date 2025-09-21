@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide covers deploying the Shanture Analytics Dashboard to various platforms.
+This guide covers deploying the Sales Analytics Dashboard to various platforms.
 
 ## 🚀 Quick Deployment Options
 

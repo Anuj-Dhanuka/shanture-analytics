@@ -73,12 +73,9 @@ const saleSchema = new mongoose.Schema({
 
 saleSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
-  // Calculate final amount
   this.finalAmount = this.totalAmount - this.discount;
   next();
 });
-
-// Index for better query performance
 saleSchema.index({ reportDate: 1 });
 saleSchema.index({ customerId: 1 });
 saleSchema.index({ productId: 1 });

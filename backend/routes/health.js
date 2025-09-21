@@ -3,12 +3,11 @@ const mongoose = require('mongoose');
 const config = require('../config/config');
 const router = express.Router();
 
-// Health check endpoint
 router.get('/', async (req, res) => {
   try {
     const healthCheck = {
       success: true,
-      message: 'Shanture Analytics API is running',
+      message: 'Everything looks good! The analytics system is running smoothly',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       environment: config.NODE_ENV,
@@ -19,7 +18,6 @@ router.get('/', async (req, res) => {
       }
     };
 
-    // Check database connection
     if (mongoose.connection.readyState === 1) {
       healthCheck.services.database = 'connected';
     } else {
@@ -27,7 +25,6 @@ router.get('/', async (req, res) => {
       healthCheck.success = false;
     }
 
-    // Check WebSocket service
     const io = req.app.get('io');
     if (io) {
       healthCheck.services.websocket = 'active';
@@ -40,14 +37,13 @@ router.get('/', async (req, res) => {
   } catch (error) {
     res.status(503).json({
       success: false,
-      message: 'Health check failed',
+      message: 'Oops! Something is not quite right with our system',
       error: error.message,
       timestamp: new Date().toISOString()
     });
   }
 });
 
-// Detailed health check
 router.get('/detailed', async (req, res) => {
   try {
     const detailedHealth = {
@@ -82,7 +78,7 @@ router.get('/detailed', async (req, res) => {
   } catch (error) {
     res.status(503).json({
       success: false,
-      message: 'Detailed health check failed',
+      message: 'We are having some technical difficulties',
       error: error.message,
       timestamp: new Date().toISOString()
     });

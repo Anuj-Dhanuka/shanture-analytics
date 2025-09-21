@@ -43,7 +43,6 @@ const Sidebar = () => {
       socket.on('newSale', (newSale) => {
         setRecentSalesCount(prev => prev + 1);
         
-        // Reset count after 1 minute
         setTimeout(() => {
           setRecentSalesCount(0);
         }, 60000);

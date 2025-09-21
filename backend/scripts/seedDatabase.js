@@ -10,7 +10,6 @@ const AnalyticsReport = require('../models/AnalyticsReport');
 
 const connectDB = require('../config/database');
 
-// Connect to database
 connectDB();
 
 const regions = ['North', 'South', 'East', 'West', 'Central'];
@@ -26,15 +25,12 @@ const seedDatabase = async () => {
   try {
     console.log('Starting database seeding...');
 
-    // Clear existing data
     await Customer.deleteMany({});
     await Product.deleteMany({});
     await Sale.deleteMany({});
     await AnalyticsReport.deleteMany({});
 
     console.log('Cleared existing data');
-
-    // Create customers
     const customers = [];
     for (let i = 0; i < 200; i++) {
       const customer = new Customer({
@@ -55,7 +51,6 @@ const seedDatabase = async () => {
     await Customer.insertMany(customers);
     console.log(`Created ${customers.length} customers`);
 
-    // Create products
     const products = [];
     for (let i = 0; i < 100; i++) {
       const product = new Product({
@@ -75,7 +70,6 @@ const seedDatabase = async () => {
     await Product.insertMany(products);
     console.log(`Created ${products.length} products`);
 
-    // Create sales data for the last 2+ years
     const sales = [];
     const startDate = moment().subtract(2, 'years');
     const endDate = moment();
@@ -109,7 +103,6 @@ const seedDatabase = async () => {
     await Sale.insertMany(sales);
     console.log(`Created ${sales.length} sales`);
 
-    // Generate some analytics reports
     const analyticsReports = [];
     for (let i = 0; i < 12; i++) {
       const monthStart = moment().subtract(i, 'months').startOf('month');
@@ -123,7 +116,6 @@ const seedDatabase = async () => {
       const totalSales = monthSales.length;
       const averageOrderValue = totalSales > 0 ? totalRevenue / totalSales : 0;
 
-      // Region stats
       const regionStats = regions.map(region => {
         const regionSales = monthSales.filter(sale => sale.region === region);
         return {
@@ -134,7 +126,6 @@ const seedDatabase = async () => {
         };
       });
 
-      // Category stats
       const categoryStats = categories.map(category => {
         const categoryProducts = products.filter(product => product.category === category);
         const categorySales = monthSales.filter(sale => 
@@ -148,7 +139,6 @@ const seedDatabase = async () => {
         };
       });
 
-      // Top products
       const productSales = {};
       monthSales.forEach(sale => {
         const productId = sale.productId.toString();
@@ -168,7 +158,6 @@ const seedDatabase = async () => {
         .sort((a, b) => b.totalSales - a.totalSales)
         .slice(0, 10);
 
-      // Top customers
       const customerSales = {};
       monthSales.forEach(sale => {
         const customerId = sale.customerId.toString();
@@ -188,7 +177,6 @@ const seedDatabase = async () => {
         .sort((a, b) => b.totalSpent - a.totalSpent)
         .slice(0, 10);
 
-      // Payment method stats
       const paymentStats = paymentMethods.map(method => {
         const methodSales = monthSales.filter(sale => sale.paymentMethod === method);
         return {

@@ -1,7 +1,7 @@
 {
-  "name": "shanture-analytics-backend",
+  "name": "sales-analytics-backend",
   "version": "1.0.0",
-  "description": "Sales Analytics Dashboard Backend",
+  "description": "Sales Analytics Dashboard Backend API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -32,6 +32,6 @@
     "mern",
     "mongodb"
   ],
-  "author": "Shanture Analytics Team",
+  "author": "Development Team",
   "license": "MIT"
 }

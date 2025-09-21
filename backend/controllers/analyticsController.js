@@ -4,7 +4,6 @@ const Product = require('../models/Product');
 const AnalyticsReport = require('../models/AnalyticsReport');
 const moment = require('moment');
 
-// Get total revenue for date range
 const getTotalRevenue = async (startDate, endDate) => {
   try {
     const result = await Sale.aggregate([
@@ -37,11 +36,10 @@ const getTotalRevenue = async (startDate, endDate) => {
 
     return result[0] || { totalRevenue: 0, totalSales: 0, averageOrderValue: 0 };
   } catch (error) {
-    throw new Error(`Error getting total revenue: ${error.message}`);
+    throw new Error(`Could not calculate revenue data: ${error.message}`);
   }
 };
 
-// Get region-wise statistics
 const getRegionStats = async (startDate, endDate) => {
   try {
     const result = await Sale.aggregate([
@@ -78,11 +76,10 @@ const getRegionStats = async (startDate, endDate) => {
 
     return result;
   } catch (error) {
-    throw new Error(`Error getting region stats: ${error.message}`);
+    throw new Error(`Could not fetch regional data: ${error.message}`);
   }
 };
 
-// Get category-wise statistics
 const getCategoryStats = async (startDate, endDate) => {
   try {
     const result = await Sale.aggregate([
@@ -132,11 +129,10 @@ const getCategoryStats = async (startDate, endDate) => {
 
     return result;
   } catch (error) {
-    throw new Error(`Error getting category stats: ${error.message}`);
+    throw new Error(`Could not fetch category data: ${error.message}`);
   }
 };
 
-// Get top products
 const getTopProducts = async (startDate, endDate, limit = 10) => {
   try {
     const result = await Sale.aggregate([
@@ -191,11 +187,10 @@ const getTopProducts = async (startDate, endDate, limit = 10) => {
 
     return result;
   } catch (error) {
-    throw new Error(`Error getting top products: ${error.message}`);
+    throw new Error(`Could not fetch top products: ${error.message}`);
   }
 };
 
-// Get top customers
 const getTopCustomers = async (startDate, endDate, limit = 10) => {
   try {
     const result = await Sale.aggregate([
@@ -252,11 +247,10 @@ const getTopCustomers = async (startDate, endDate, limit = 10) => {
 
     return result;
   } catch (error) {
-    throw new Error(`Error getting top customers: ${error.message}`);
+    throw new Error(`Could not fetch top customers: ${error.message}`);
   }
 };
 
-// Get daily sales trend
 const getDailySalesTrend = async (startDate, endDate) => {
   try {
     const result = await Sale.aggregate([
@@ -303,11 +297,10 @@ const getDailySalesTrend = async (startDate, endDate) => {
 
     return result;
   } catch (error) {
-    throw new Error(`Error getting daily sales trend: ${error.message}`);
+    throw new Error(`Could not fetch sales trend data: ${error.message}`);
   }
 };
 
-// Get payment method statistics
 const getPaymentMethodStats = async (startDate, endDate) => {
   try {
     const result = await Sale.aggregate([
@@ -344,11 +337,10 @@ const getPaymentMethodStats = async (startDate, endDate) => {
 
     return result;
   } catch (error) {
-    throw new Error(`Error getting payment method stats: ${error.message}`);
+    throw new Error(`Could not fetch payment data: ${error.message}`);
   }
 };
 
-// Generate comprehensive analytics report
 const generateAnalyticsReport = async (startDate, endDate) => {
   try {
     const [
@@ -369,7 +361,6 @@ const generateAnalyticsReport = async (startDate, endDate) => {
       getPaymentMethodStats(startDate, endDate)
     ]);
 
-    // Get unique customers and products count
     const uniqueCustomers = await Sale.distinct('customerId', {
       reportDate: { $gte: new Date(startDate), $lte: new Date(endDate) },
       status: 'Completed'
@@ -397,17 +388,15 @@ const generateAnalyticsReport = async (startDate, endDate) => {
       paymentMethodStats: paymentStats
     };
 
-    // Save the report to database
     const analyticsReport = new AnalyticsReport(report);
     await analyticsReport.save();
 
     return report;
   } catch (error) {
-    throw new Error(`Error generating analytics report: ${error.message}`);
+    throw new Error(`Could not generate analytics report: ${error.message}`);
   }
 };
 
-// Get saved analytics reports
 const getAnalyticsReports = async (page = 1, limit = 10) => {
   try {
     const skip = (page - 1) * limit;
@@ -430,28 +419,25 @@ const getAnalyticsReports = async (page = 1, limit = 10) => {
       }
     };
   } catch (error) {
-    throw new Error(`Error getting analytics reports: ${error.message}`);
+    throw new Error(`Could not fetch analytics reports: ${error.message}`);
   }
 };
 
-// Add new sale
 const addSale = async (saleData) => {
   try {
     const sale = new Sale(saleData);
     await sale.save();
     
-    // Populate the sale with customer and product details
     const populatedSale = await Sale.findById(sale._id)
       .populate('customerId', 'name email region type')
       .populate('productId', 'name category price');
     
     return populatedSale;
   } catch (error) {
-    throw new Error(`Error adding sale: ${error.message}`);
+    throw new Error(`Could not add the sale: ${error.message}`);
   }
 };
 
-// Get all customers for dropdown
 const getCustomers = async (search = '') => {
   try {
     const query = search 
@@ -468,11 +454,10 @@ const getCustomers = async (search = '') => {
     const customers = await Customer.find(query, 'name email region type phone address').sort({ name: 1 });
     return customers;
   } catch (error) {
-    throw new Error(`Error fetching customers: ${error.message}`);
+    throw new Error(`Could not fetch customer data: ${error.message}`);
   }
 };
 
-// Get all products for dropdown
 const getProducts = async (search = '') => {
   try {
     const query = search 
@@ -490,7 +475,7 @@ const getProducts = async (search = '') => {
     const products = await Product.find(query, 'name category price stock brand description sku').sort({ name: 1 });
     return products;
   } catch (error) {
-    throw new Error(`Error fetching products: ${error.message}`);
+    throw new Error(`Could not fetch product data: ${error.message}`);
   }
 };
 

@@ -68,25 +68,20 @@ const Dashboard = () => {
     fetchDashboardData();
   }, [startDate, endDate]);
 
-  // Real-time updates when new sales are added
   useEffect(() => {
     if (socket) {
       socket.on('newSale', (newSale) => {
         console.log('New sale received:', newSale);
-        // Check if the new sale falls within the current date range
         const saleDate = new Date(newSale.reportDate);
         if (saleDate >= startDate && saleDate <= endDate) {
-          // Show detailed notification
           setNotification({
             open: true,
             message: `🎉 New Sale Detected!`,
             severity: 'success',
             saleData: newSale
           });
-          // Refresh dashboard data to show the new sale
           fetchDashboardData();
         } else {
-          // Show notification for sales outside current range
           setNotification({
             open: true,
             message: `New sale added (outside current date range)`,
@@ -122,23 +117,22 @@ const Dashboard = () => {
       if (result.success) {
         setNotification({
           open: true,
-          message: 'Database seeded successfully! Refreshing dashboard...',
+          message: 'Great! Sample data has been added. Refreshing your dashboard...',
           severity: 'success'
         });
         setSeedDialogOpen(false);
-        // Refresh dashboard data
         fetchDashboardData();
       } else {
         setNotification({
           open: true,
-          message: `Error seeding database: ${result.message}`,
+          message: `Sorry, we could not add sample data: ${result.message}`,
           severity: 'error'
         });
       }
     } catch (err) {
       setNotification({
         open: true,
-        message: `Error seeding database: ${err.message}`,
+        message: `Sorry, we could not add sample data: ${err.message}`,
         severity: 'error'
       });
     } finally {
@@ -157,7 +151,7 @@ const Dashboard = () => {
         >
           <CircularProgress size={60} />
           <Typography variant="h6" sx={{ ml: 2 }}>
-            Loading dashboard data...
+            Getting your data ready...
           </Typography>
         </Box>
       </Container>
@@ -179,7 +173,7 @@ const Dashboard = () => {
             Sales Analytics Dashboard
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
-            Comprehensive sales data analysis and insights
+            Your sales data at a glance - insights that matter
           </Typography>
         </Box>
 
@@ -215,7 +209,7 @@ const Dashboard = () => {
               </Button>
             }
           >
-            No data available. Click "Seed Database" to populate with sample data.
+            No data available yet. Click "Seed Database" to add some sample data and see how it works.
           </Alert>
         )}
 
@@ -259,21 +253,20 @@ const Dashboard = () => {
           </>
         )}
 
-        {/* Seed Database Dialog */}
         <Dialog open={seedDialogOpen} onClose={() => setSeedDialogOpen(false)}>
-          <DialogTitle>Seed Database</DialogTitle>
+          <DialogTitle>Add Sample Data</DialogTitle>
           <DialogContent>
             <Typography>
-              This will populate your database with sample sales data including:
+              This will add some sample sales data to help you explore the dashboard:
             </Typography>
             <ul>
-              <li>200 customers</li>
-              <li>100 products</li>
+              <li>200 sample customers</li>
+              <li>100 sample products</li>
               <li>5000 sales records (2+ years of data)</li>
               <li>12 monthly analytics reports</li>
             </ul>
             <Typography color="warning.main" sx={{ mt: 2 }}>
-              <strong>Warning:</strong> This will clear all existing data and replace it with sample data.
+              <strong>Note:</strong> This will replace any existing data with sample data.
             </Typography>
           </DialogContent>
           <DialogActions>
@@ -286,7 +279,7 @@ const Dashboard = () => {
               color="primary"
               disabled={seeding}
             >
-              {seeding ? 'Seeding...' : 'Seed Database'}
+              {seeding ? 'Adding data...' : 'Add Sample Data'}
             </Button>
           </DialogActions>
         </Dialog>

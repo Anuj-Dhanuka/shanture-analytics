@@ -1,6 +1,6 @@
-# 🚀 Deployment Guide - Shanture Analytics Dashboard
+# 🚀 Deployment Guide - Sales Analytics Dashboard
 
-This guide will help you deploy the Shanture Analytics Dashboard to Render.com.
+This guide will help you deploy the Sales Analytics Dashboard to Render.com.
 
 ## 📋 Prerequisites
 
@@ -17,19 +17,19 @@ This guide will help you deploy the Shanture Analytics Dashboard to Render.com.
 cd "C:\personal projects\shanture-analytics"
 git init
 git add .
-git commit -m "Initial commit: Shanture Analytics Dashboard - MERN Stack Application"
+git commit -m "Initial commit: Sales Analytics Dashboard - MERN Stack Application"
 ```
 
 2. **Create GitHub repository:**
    - Go to [GitHub.com](https://github.com)
    - Click "New repository"
-   - Name: `shanture-analytics`
+   - Name: `sales-analytics`
    - Make it public
    - Don't initialize with README
 
 3. **Push to GitHub:**
 ```bash
-git remote add origin https://github.com/YOUR_USERNAME/shanture-analytics.git
+git remote add origin https://github.com/YOUR_USERNAME/sales-analytics.git
 git branch -M main
 git push -u origin main
 ```
@@ -41,10 +41,10 @@ git push -u origin main
 2. **Create Web Service:**
    - Click "New +" → "Web Service"
    - Connect your GitHub repository
-   - Select `shanture-analytics` repository
+   - Select `sales-analytics` repository
 
 3. **Configure Backend Service:**
-   - **Name**: `shanture-analytics-backend`
+   - **Name**: `sales-analytics-backend`
    - **Environment**: `Node`
    - **Build Command**: `cd backend && npm install`
    - **Start Command**: `cd backend && npm start`
@@ -54,7 +54,7 @@ git push -u origin main
    ```
    NODE_ENV=production
    MONGODB_URI=your-mongodb-atlas-connection-string
-   FRONTEND_URL=https://shanture-analytics-frontend.onrender.com
+   FRONTEND_URL=https://sales-analytics-frontend.onrender.com
    PORT=10000
    ```
 
@@ -65,18 +65,18 @@ git push -u origin main
 1. **Create Static Site:**
    - Click "New +" → "Static Site"
    - Connect your GitHub repository
-   - Select `shanture-analytics` repository
+   - Select `sales-analytics` repository
 
 2. **Configure Frontend Service:**
-   - **Name**: `shanture-analytics-frontend`
+   - **Name**: `sales-analytics-frontend`
    - **Build Command**: `cd frontend && npm install && npm run build`
    - **Publish Directory**: `frontend/build`
    - **Plan**: Free
 
 3. **Set Environment Variables:**
    ```
-   REACT_APP_API_URL=https://shanture-analytics-backend.onrender.com/api
-   REACT_APP_SOCKET_URL=https://shanture-analytics-backend.onrender.com
+   REACT_APP_API_URL=https://sales-analytics-backend.onrender.com/api
+   REACT_APP_SOCKET_URL=https://sales-analytics-backend.onrender.com
    ```
 
 4. **Deploy**: Click "Create Static Site"
@@ -241,10 +241,10 @@ Render automatically deploys when you push to your main branch:
 
 ## 🎉 Success!
 
-Once deployed, your Shanture Analytics Dashboard will be available at:
-- **Frontend**: `https://shanture-analytics-frontend.onrender.com`
-- **Backend**: `https://shanture-analytics-backend.onrender.com`
-- **API Health**: `https://shanture-analytics-backend.onrender.com/api/health`
+Once deployed, your Sales Analytics Dashboard will be available at:
+- **Frontend**: `https://sales-analytics-frontend.onrender.com`
+- **Backend**: `https://sales-analytics-backend.onrender.com`
+- **API Health**: `https://sales-analytics-backend.onrender.com/api/health`
 
 ---
 

@@ -60,7 +60,6 @@ productSchema.pre('save', function(next) {
   next();
 });
 
-// Virtual for profit margin
 productSchema.virtual('profitMargin').get(function() {
   return ((this.price - this.cost) / this.price * 100).toFixed(2);
 });

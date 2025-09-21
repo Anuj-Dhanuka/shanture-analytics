@@ -1,7 +1,7 @@
 {
-  "name": "shanture-analytics-frontend",
+  "name": "sales-analytics-frontend",
   "version": "1.0.0",
-  "description": "Sales Analytics Dashboard Frontend",
+  "description": "Sales Analytics Dashboard Frontend Application",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
