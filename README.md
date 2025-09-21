@@ -370,7 +370,7 @@ Built for Shanture's Fresher Hiring Challenge by a MERN stack developer.
 
 ## 📞 Support
 
-For support and questions, please contact the development team.
+For support and questions, please contact anujd973@gmail.com.
 
 ---
 

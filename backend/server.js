@@ -13,15 +13,19 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, config.SOCKET_OPTIONS);
 
+// Connect to MongoDB
 connectDB();
 
+// Middleware
 app.use(cors(config.CORS_OPTIONS));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Routes
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/health', healthRoutes);
 
+// Socket.io connection handling
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
 
@@ -35,8 +39,10 @@ io.on('connection', (socket) => {
   });
 });
 
+// Make io accessible to other modules
 app.set('io', io);
 
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err.stack);
   res.status(500).json({
@@ -46,6 +52,7 @@ app.use((err, req, res, next) => {
   });
 });
 
+// 404 handler
 app.use('*', (req, res) => {
   res.status(404).json({
     success: false,
@@ -55,6 +62,7 @@ app.use('*', (req, res) => {
 
 const PORT = config.PORT;
 
+// Handle graceful shutdown
 process.on('SIGTERM', () => {
   console.log('SIGTERM received. Shutting down gracefully...');
   server.close(() => {

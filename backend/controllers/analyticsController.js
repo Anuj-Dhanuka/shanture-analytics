@@ -4,6 +4,7 @@ const Product = require('../models/Product');
 const AnalyticsReport = require('../models/AnalyticsReport');
 const moment = require('moment');
 
+// Get total revenue for date range
 const getTotalRevenue = async (startDate, endDate) => {
   try {
     const result = await Sale.aggregate([
@@ -40,6 +41,7 @@ const getTotalRevenue = async (startDate, endDate) => {
   }
 };
 
+// Get region-wise statistics
 const getRegionStats = async (startDate, endDate) => {
   try {
     const result = await Sale.aggregate([
@@ -80,6 +82,7 @@ const getRegionStats = async (startDate, endDate) => {
   }
 };
 
+// Get category-wise statistics
 const getCategoryStats = async (startDate, endDate) => {
   try {
     const result = await Sale.aggregate([
@@ -133,6 +136,7 @@ const getCategoryStats = async (startDate, endDate) => {
   }
 };
 
+// Get top products
 const getTopProducts = async (startDate, endDate, limit = 10) => {
   try {
     const result = await Sale.aggregate([
@@ -191,6 +195,7 @@ const getTopProducts = async (startDate, endDate, limit = 10) => {
   }
 };
 
+// Get top customers
 const getTopCustomers = async (startDate, endDate, limit = 10) => {
   try {
     const result = await Sale.aggregate([
@@ -251,6 +256,7 @@ const getTopCustomers = async (startDate, endDate, limit = 10) => {
   }
 };
 
+// Get daily sales trend
 const getDailySalesTrend = async (startDate, endDate) => {
   try {
     const result = await Sale.aggregate([
@@ -301,6 +307,7 @@ const getDailySalesTrend = async (startDate, endDate) => {
   }
 };
 
+// Get payment method statistics
 const getPaymentMethodStats = async (startDate, endDate) => {
   try {
     const result = await Sale.aggregate([
@@ -341,6 +348,7 @@ const getPaymentMethodStats = async (startDate, endDate) => {
   }
 };
 
+// Generate comprehensive analytics report
 const generateAnalyticsReport = async (startDate, endDate) => {
   try {
     const [
@@ -361,6 +369,7 @@ const generateAnalyticsReport = async (startDate, endDate) => {
       getPaymentMethodStats(startDate, endDate)
     ]);
 
+    // Get unique customers and products count
     const uniqueCustomers = await Sale.distinct('customerId', {
       reportDate: { $gte: new Date(startDate), $lte: new Date(endDate) },
       status: 'Completed'
@@ -388,6 +397,7 @@ const generateAnalyticsReport = async (startDate, endDate) => {
       paymentMethodStats: paymentStats
     };
 
+    // Save the report to database
     const analyticsReport = new AnalyticsReport(report);
     await analyticsReport.save();
 
@@ -397,6 +407,7 @@ const generateAnalyticsReport = async (startDate, endDate) => {
   }
 };
 
+// Get saved analytics reports
 const getAnalyticsReports = async (page = 1, limit = 10) => {
   try {
     const skip = (page - 1) * limit;
@@ -423,11 +434,13 @@ const getAnalyticsReports = async (page = 1, limit = 10) => {
   }
 };
 
+// Add new sale
 const addSale = async (saleData) => {
   try {
     const sale = new Sale(saleData);
     await sale.save();
     
+    // Populate the sale with customer and product details
     const populatedSale = await Sale.findById(sale._id)
       .populate('customerId', 'name email region type')
       .populate('productId', 'name category price');
@@ -438,6 +451,7 @@ const addSale = async (saleData) => {
   }
 };
 
+// Get all customers for dropdown
 const getCustomers = async (search = '') => {
   try {
     const query = search 
@@ -458,6 +472,7 @@ const getCustomers = async (search = '') => {
   }
 };
 
+// Get all products for dropdown
 const getProducts = async (search = '') => {
   try {
     const query = search 
