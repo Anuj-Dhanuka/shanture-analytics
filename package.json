@@ -1,0 +1,43 @@
+{
+  "name": "shanture-analytics",
+  "version": "1.0.0",
+  "description": "Sales Analytics Dashboard - MERN Stack Application for Shanture Fresher Hiring Challenge",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "install-server": "cd backend && npm install",
+    "install-client": "cd frontend && npm install",
+    "install-all": "npm run install-server && npm run install-client",
+    "seed": "cd backend && npm run seed",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "deploy": "bash scripts/deploy.sh",
+    "postinstall": "npm run install-all"
+  },
+  "keywords": [
+    "analytics",
+    "dashboard",
+    "mern",
+    "mongodb",
+    "react",
+    "nodejs",
+    "express",
+    "sales",
+    "data-visualization"
+  ],
+  "author": "Shanture Analytics Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/shanture-analytics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/shanture-analytics/issues"
+  },
+  "homepage": "https://github.com/your-username/shanture-analytics#readme"
+}

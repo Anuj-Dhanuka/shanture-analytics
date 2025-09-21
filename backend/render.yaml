@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: shanture-analytics-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: shanture-analytics-db
+          property: connectionString
+      - key: FRONTEND_URL
+        value: https://shanture-analytics-frontend.onrender.com
+      - key: PORT
+        value: 10000
+
