@@ -288,9 +288,9 @@ npm run eject
 
 ## 🚀 Try It Out
 
-- **Dashboard**: https://sales-analytics-frontend.onrender.com
-- **API**: https://sales-analytics-backend.onrender.com
-- **Health Check**: https://sales-analytics-backend.onrender.com/api/health
+- **Dashboard**: https://shanture-analytics.onrender.com
+- **API**: https://shanture-analytics-backend.onrender.com
+- **Health Check**: https://shanture-analytics-backend.onrender.com/api/health
 
 ## 🚀 Deployment
 
