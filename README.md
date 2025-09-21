@@ -273,17 +273,17 @@ The seeding script generates:
 
 ### Backend
 ```bash
-npm start          # Start production server
-npm run dev        # Start development server with nodemon
-npm run seed       # Seed database with sample data
+npm start
+npm run dev
+npm run seed
 ```
 
 ### Frontend
 ```bash
-npm start          # Start development server
-npm run build      # Build for production
-npm test           # Run tests
-npm run eject      # Eject from Create React App
+npm start
+npm run build
+npm test
+npm run eject
 ```
 
 ## 🚀 Live Demo
