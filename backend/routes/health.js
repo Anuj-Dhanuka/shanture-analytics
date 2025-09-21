@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const config = require('../config/config');
 const router = express.Router();
 
 // Health check endpoint
@@ -10,7 +11,7 @@ router.get('/', async (req, res) => {
       message: 'Shanture Analytics API is running',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
-      environment: process.env.NODE_ENV || 'development',
+      environment: config.NODE_ENV,
       version: process.env.npm_package_version || '1.0.0',
       services: {
         database: 'unknown',
@@ -53,7 +54,7 @@ router.get('/detailed', async (req, res) => {
       success: true,
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
-      environment: process.env.NODE_ENV || 'development',
+      environment: config.NODE_ENV,
       version: process.env.npm_package_version || '1.0.0',
       memory: process.memoryUsage(),
       cpu: process.cpuUsage(),
@@ -70,8 +71,8 @@ router.get('/detailed', async (req, res) => {
       },
       environment_variables: {
         NODE_ENV: process.env.NODE_ENV || 'development',
-        PORT: process.env.PORT || '5000',
-        FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:3000',
+        PORT: config.PORT.toString(),
+        FRONTEND_URL: config.FRONTEND_URL,
         MONGODB_URI: process.env.MONGODB_URI ? '***configured***' : 'not set'
       }
     };

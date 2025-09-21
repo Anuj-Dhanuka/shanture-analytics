@@ -4,27 +4,20 @@ const http = require('http');
 const socketIo = require('socket.io');
 require('dotenv').config();
 
+const config = require('./config/config');
 const connectDB = require('./config/database');
 const analyticsRoutes = require('./routes/analytics');
 const healthRoutes = require('./routes/health');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, {
-  cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
-});
+const io = socketIo(server, config.SOCKET_OPTIONS);
 
 // Connect to MongoDB
 connectDB();
 
 // Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:3000",
-  credentials: true
-}));
+app.use(cors(config.CORS_OPTIONS));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -67,7 +60,7 @@ app.use('*', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = config.PORT;
 
 // Handle graceful shutdown
 process.on('SIGTERM', () => {
@@ -89,8 +82,8 @@ process.on('SIGINT', () => {
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📊 Shanture Analytics Dashboard API`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
+  console.log(`🌍 Environment: ${config.NODE_ENV}`);
+  console.log(`🔗 Frontend URL: ${config.FRONTEND_URL}`);
 });
 
 module.exports = { app, server, io };
