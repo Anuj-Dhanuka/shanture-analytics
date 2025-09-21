@@ -4,7 +4,6 @@ const analyticsController = require('../controllers/analyticsController');
 
 const router = express.Router();
 
-// Validation middleware
 const validateRequest = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -16,8 +15,6 @@ const validateRequest = (req, res, next) => {
   }
   next();
 };
-
-// Get total revenue
 router.get('/revenue', [
   query('startDate').isISO8601().withMessage('Start date must be a valid ISO 8601 date'),
   query('endDate').isISO8601().withMessage('End date must be a valid ISO 8601 date')
@@ -38,7 +35,6 @@ router.get('/revenue', [
   }
 });
 
-// Get region statistics
 router.get('/regions', [
   query('startDate').isISO8601().withMessage('Start date must be a valid ISO 8601 date'),
   query('endDate').isISO8601().withMessage('End date must be a valid ISO 8601 date')
@@ -59,7 +55,6 @@ router.get('/regions', [
   }
 });
 
-// Get category statistics
 router.get('/categories', [
   query('startDate').isISO8601().withMessage('Start date must be a valid ISO 8601 date'),
   query('endDate').isISO8601().withMessage('End date must be a valid ISO 8601 date')
@@ -80,7 +75,6 @@ router.get('/categories', [
   }
 });
 
-// Get top products
 router.get('/top-products', [
   query('startDate').isISO8601().withMessage('Start date must be a valid ISO 8601 date'),
   query('endDate').isISO8601().withMessage('End date must be a valid ISO 8601 date'),
@@ -102,7 +96,6 @@ router.get('/top-products', [
   }
 });
 
-// Get top customers
 router.get('/top-customers', [
   query('startDate').isISO8601().withMessage('Start date must be a valid ISO 8601 date'),
   query('endDate').isISO8601().withMessage('End date must be a valid ISO 8601 date'),
@@ -124,7 +117,6 @@ router.get('/top-customers', [
   }
 });
 
-// Get daily sales trend
 router.get('/daily-trend', [
   query('startDate').isISO8601().withMessage('Start date must be a valid ISO 8601 date'),
   query('endDate').isISO8601().withMessage('End date must be a valid ISO 8601 date')
@@ -145,7 +137,6 @@ router.get('/daily-trend', [
   }
 });
 
-// Get payment method statistics
 router.get('/payment-methods', [
   query('startDate').isISO8601().withMessage('Start date must be a valid ISO 8601 date'),
   query('endDate').isISO8601().withMessage('End date must be a valid ISO 8601 date')
@@ -166,7 +157,6 @@ router.get('/payment-methods', [
   }
 });
 
-// Generate comprehensive analytics report
 router.post('/generate-report', [
   body('startDate').isISO8601().withMessage('Start date must be a valid ISO 8601 date'),
   body('endDate').isISO8601().withMessage('End date must be a valid ISO 8601 date')
@@ -188,7 +178,6 @@ router.post('/generate-report', [
   }
 });
 
-// Get saved analytics reports
 router.get('/reports', [
   query('page').optional().isInt({ min: 1 }).withMessage('Page must be a positive integer'),
   query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100')
@@ -209,7 +198,6 @@ router.get('/reports', [
   }
 });
 
-// Get dashboard summary
 router.get('/dashboard', [
   query('startDate').isISO8601().withMessage('Start date must be a valid ISO 8601 date'),
   query('endDate').isISO8601().withMessage('End date must be a valid ISO 8601 date')
@@ -257,15 +245,11 @@ router.get('/dashboard', [
   }
 });
 
-// Seed database with sample data
 router.post('/seed', async (req, res) => {
   try {
-    // Import the seed function
     const { exec } = require('child_process');
     const { promisify } = require('util');
     const execAsync = promisify(exec);
-    
-    // Run the seed script
     const { stdout, stderr } = await execAsync('node scripts/seedDatabase.js');
     
     res.json({
@@ -282,7 +266,6 @@ router.post('/seed', async (req, res) => {
   }
 });
 
-// Add new sale
 router.post('/sales', [
   body('customerId').isMongoId().withMessage('Valid customer ID is required'),
   body('productId').isMongoId().withMessage('Valid product ID is required'),
@@ -344,7 +327,6 @@ router.post('/sales', [
   }
 });
 
-// Get customers for dropdown
 router.get('/customers', async (req, res) => {
   try {
     const { search } = req.query;
@@ -363,7 +345,6 @@ router.get('/customers', async (req, res) => {
   }
 });
 
-// Get products for dropdown
 router.get('/products', async (req, res) => {
   try {
     const { search } = req.query;

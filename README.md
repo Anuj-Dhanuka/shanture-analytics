@@ -1,47 +1,47 @@
-# Shanture Sales Analytics Dashboard
+Shanture Sales Analytics Dashboard
 
 A comprehensive MERN stack application for sales data analytics and visualization, built for Shanture's Fresher Hiring Challenge.
 
-## 🚀 Features
+Features
 
-### Core Analytics
-- **Real-time Dashboard**: Interactive charts and metrics with live data updates
-- **Date Range Filtering**: Flexible date selection with quick preset options
-- **Revenue Analytics**: Total revenue, average order value, and trend analysis
-- **Regional Performance**: Sales breakdown by geographical regions
-- **Category Analysis**: Product category performance metrics
-- **Top Products & Customers**: Ranking tables with detailed insights
-- **Payment Method Analytics**: Transaction analysis by payment type
+Core Analytics
+- Real-time Dashboard: Interactive charts and metrics with live data updates
+- Date Range Filtering: Flexible date selection with quick preset options
+- Revenue Analytics: Total revenue, average order value, and trend analysis
+- Regional Performance: Sales breakdown by geographical regions
+- Category Analysis: Product category performance metrics
+- Top Products & Customers: Ranking tables with detailed insights
+- Payment Method Analytics: Transaction analysis by payment type
 
-### Technical Features
-- **MongoDB Aggregation Pipelines**: Advanced data processing and analytics
-- **Real-time Updates**: WebSocket integration for live data streaming
-- **Responsive Design**: Mobile-friendly Material-UI interface
-- **Data Export**: Generate and download analytics reports
-- **Performance Optimized**: Efficient database queries and caching
+Technical Features
+- MongoDB Aggregation Pipelines: Advanced data processing and analytics
+- Real-time Updates: WebSocket integration for live data streaming
+- Responsive Design: Mobile-friendly Material-UI interface
+- Data Export: Generate and download analytics reports
+- Performance Optimized: Efficient database queries and caching
 
-## 🛠️ Tech Stack
+Tech Stack
 
-### Backend
-- **Node.js** with Express.js
-- **MongoDB** with Mongoose ODM
-- **Socket.io** for real-time communication
-- **Express Validator** for input validation
-- **Faker.js** for sample data generation
+Backend
+- Node.js with Express.js
+- MongoDB with Mongoose ODM
+- Socket.io for real-time communication
+- Express Validator for input validation
+- Faker.js for sample data generation
 
-### Frontend
-- **React 18** with functional components and hooks
-- **Material-UI (MUI)** for modern UI components
-- **ECharts** for interactive data visualization
-- **Axios** for API communication
-- **React Router** for navigation
-- **Date-fns** for date manipulation
+Frontend
+- React 18 with functional components and hooks
+- Material-UI (MUI) for modern UI components
+- ECharts for interactive data visualization
+- Axios for API communication
+- React Router for navigation
+- Date-fns for date manipulation
 
-## 📊 Database Schema
+Database Schema
 
-### Collections/Models
+Collections/Models
 
-#### Customer
+Customer
 ```javascript
 {
   name: String,
@@ -55,7 +55,7 @@ A comprehensive MERN stack application for sales data analytics and visualizatio
 }
 ```
 
-#### Product
+Product
 ```javascript
 {
   name: String,
@@ -73,7 +73,7 @@ A comprehensive MERN stack application for sales data analytics and visualizatio
 }
 ```
 
-#### Sale
+Sale
 ```javascript
 {
   customerId: ObjectId (ref: Customer),
@@ -93,7 +93,7 @@ A comprehensive MERN stack application for sales data analytics and visualizatio
 }
 ```
 
-#### AnalyticsReport
+AnalyticsReport
 ```javascript
 {
   reportDate: Date,
@@ -114,34 +114,34 @@ A comprehensive MERN stack application for sales data analytics and visualizatio
 }
 ```
 
-## 🚀 Quick Start
+Quick Start
 
-### Prerequisites
+Prerequisites
 - Node.js (v16 or higher)
 - MongoDB Atlas account or local MongoDB
 - Git
 
-### Installation
+Installation
 
-1. **Clone the repository**
+1. Clone the repository
    ```bash
    git clone <repository-url>
    cd shanture-analytics
    ```
 
-2. **Install backend dependencies**
+2. Install backend dependencies
    ```bash
    cd backend
    npm install
    ```
 
-3. **Install frontend dependencies**
+3. Install frontend dependencies
    ```bash
    cd ../frontend
    npm install
    ```
 
-4. **Environment Setup**
+4. Environment Setup
    
    Create a `.env` file in the backend directory:
    ```env
@@ -151,13 +151,13 @@ A comprehensive MERN stack application for sales data analytics and visualizatio
    FRONTEND_URL=http://localhost:3000
    ```
 
-5. **Seed the database**
+5. Seed the database
    ```bash
    cd backend
    npm run seed
    ```
 
-6. **Start the development servers**
+6. Start the development servers
 
    Backend (Terminal 1):
    ```bash
@@ -171,14 +171,14 @@ A comprehensive MERN stack application for sales data analytics and visualizatio
    npm start
    ```
 
-7. **Access the application**
+7. Access the application
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:5000
    - API Health Check: http://localhost:5000/api/health
 
-## 📈 API Endpoints
+API Endpoints
 
-### Analytics Endpoints
+Analytics Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|

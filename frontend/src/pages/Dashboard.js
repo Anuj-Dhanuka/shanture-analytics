@@ -68,25 +68,20 @@ const Dashboard = () => {
     fetchDashboardData();
   }, [startDate, endDate]);
 
-  // Real-time updates when new sales are added
   useEffect(() => {
     if (socket) {
       socket.on('newSale', (newSale) => {
         console.log('New sale received:', newSale);
-        // Check if the new sale falls within the current date range
         const saleDate = new Date(newSale.reportDate);
         if (saleDate >= startDate && saleDate <= endDate) {
-          // Show detailed notification
           setNotification({
             open: true,
             message: `🎉 New Sale Detected!`,
             severity: 'success',
             saleData: newSale
           });
-          // Refresh dashboard data to show the new sale
           fetchDashboardData();
         } else {
-          // Show notification for sales outside current range
           setNotification({
             open: true,
             message: `New sale added (outside current date range)`,
@@ -126,7 +121,6 @@ const Dashboard = () => {
           severity: 'success'
         });
         setSeedDialogOpen(false);
-        // Refresh dashboard data
         fetchDashboardData();
       } else {
         setNotification({
@@ -259,7 +253,6 @@ const Dashboard = () => {
           </>
         )}
 
-        {/* Seed Database Dialog */}
         <Dialog open={seedDialogOpen} onClose={() => setSeedDialogOpen(false)}>
           <DialogTitle>Seed Database</DialogTitle>
           <DialogContent>
